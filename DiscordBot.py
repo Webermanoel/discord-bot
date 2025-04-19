@@ -12,10 +12,12 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 
 intents = discord.Intents.default()
 intents.message_content = True
+intents.members = True
+
+
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
-# Função para carregar frases de um arquivo
 def load_phrases(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         return [line.strip() for line in file.readlines()]
@@ -38,11 +40,18 @@ async def on_message(message):
 
     content_lower = message.content.lower()
 
+    if "reino princesa" in content_lower:
+        guild = message.guild
+        population = guild.member_count
+        await send_typing_message(message.channel,
+                                  f"O reino está com uma população de {population} habitantes, {message.author.mention}!")
+        return
+
     for trigger, response in zip(TRIGGERS, RESPONSES):
         if trigger in content_lower:
             formatted_response = response.replace("{author}", message.author.mention)
             await send_typing_message(message.channel, formatted_response)
-            break  # Garante que o bot só responda uma vez
+            break
 
     await bot.process_commands(message)
 
