@@ -67,12 +67,13 @@ async def daily_greetings():
     now = datetime.now(timezone)
     channel = bot.get_channel(1261798536920567813)
 
-    if now.hour == 6:  # 6 AM
-        (channel, "Bom dia!")
-    elif now.hour == 12:  # 12 PM
-        (channel, "Boa tarde!")
-    elif now.hour == 18:  # 6 PM
-        (channel, "Boa noite!")
+    if now.hour == 6:
+        await channel.send("Bom dia!")
+    elif now.hour == 12:
+        await channel.send("Boa tarde!")
+    elif now.hour == 18:
+        await channel.send("Boa noite!")
+
 
 @daily_greetings.before_loop
 async def before_daily_greetings():
